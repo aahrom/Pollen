@@ -1,9 +1,22 @@
 // src/pages/SearchPage.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const SearchPage: React.FC = () => {
   // Local state for managing search input
   const [searchTerm, setSearchTerm] = useState('');
+  const [serverMessage, setServerMessage] = useState('');
+
+  useEffect(() => {
+    // Minimal call to the backend test route
+    fetch('http://localhost:4000/api/test')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log('Data from server:', data);
+        setServerMessage(data.message);
+      })
+      .catch((error) => console.error('Error:', error));
+  }, []);
+
 
   // Handle search submission (placeholder for now)
   const handleSearch = () => {
@@ -14,6 +27,7 @@ const SearchPage: React.FC = () => {
   return (
     <div style={{ margin: '2rem' }}>
       <h1>Allergen Search</h1>
+      <p>Server says: {serverMessage}</p>
       <p>
         Enter the name of an allergen or chemical to see which products commonly contain it.
       </p>
